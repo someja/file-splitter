@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public class FileSplitter {
@@ -31,8 +32,12 @@ public class FileSplitter {
 	private int splitFileNum = 1; // 切割生成的文件个数
 
 	public static void main(String[] args) {
-		Locale locale = Locale.getDefault();
-		ResourceBundle bundle = ResourceBundle.getBundle("message", locale);
+		ResourceBundle bundle;
+		try{
+			bundle = ResourceBundle.getBundle("message");
+		}catch (MissingResourceException e){
+			bundle = ResourceBundle.getBundle("message", Locale.US);
+		}
 		Options options = new Options();
 		options.addOption(getOption("splitSize", true, bundle.getString("SPLIT_SIZE"), false));
 		options.addOption(getOption("suffix", true, bundle.getString("SUFFIX"), false));
@@ -59,7 +64,7 @@ public class FileSplitter {
 			FileSplitter splitter = new FileSplitter(splitSize, suffix, fileIndex, ignoreEmptyLine, clearDirFirst);
 			splitter.start(sourceFile, destDir);
 		}catch (MissingOptionException e) {
-			LOGGER.error("missing option: {}", e.getMissingOptions());
+			LOGGER.error("missing required option: {}", e.getMissingOptions());
 			formatter.printHelp("FileSplitter", options);
 		}  catch (UnrecognizedOptionException e) {
 			LOGGER.error("unrecognized option: {}", e.getOption());

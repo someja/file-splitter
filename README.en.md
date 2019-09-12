@@ -13,8 +13,11 @@ split one file to smaller files, Support for custom parameters
 #### Usage
 `java -jar target/file-splitter-jar-with-dependencies.jar -s D:\tmp\bigfile.txt -d D:\tmp\output`  
 this command will split the `D:\tmp\bigfile` to several files in `D:\tmp\output`  
--s source file  
--d destination dir  
+  
+  
+required config:  
+* `-s` source file  
+* `-d` destination dir  
 
 other config:  
 `-allowEmptyLine`             default ignore empty line. Enable this config will write the empty line into destination from source file  
