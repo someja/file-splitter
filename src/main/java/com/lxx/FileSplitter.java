@@ -11,6 +11,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class FileSplitter {
 	private static final Logger LOGGER = LoggerFactory.getLogger(FileSplitter.class);
@@ -25,18 +27,20 @@ public class FileSplitter {
 	private int fileIndex; // 文件命名起始索引
 	private boolean ignoreEmptyLine; // 默认忽略空行
 	private boolean clearDirFirst; // 默认清空目的文件夹
-	
+
 	private int splitFileNum = 1; // 切割生成的文件个数
 
 	public static void main(String[] args) {
+		Locale locale = Locale.getDefault();
+		ResourceBundle bundle = ResourceBundle.getBundle("message", locale);
 		Options options = new Options();
-		options.addOption(getOption("splitSize", true, "切割大小,默认字节,支持k,m,g,默认50M", false));
-		options.addOption(getOption("suffix", true, "切割后的文件后缀", false));
-		options.addOption(getOption("fileIndex", true, "文件命名起始索引（数字）", false));
-		options.addOption(getOption("allowEmptyLine", false, "默认会忽略空行,此选项会将空行写入到目的文件", false));
-		options.addOption(getOption("notClearDirAtFirst", false, "执行前不要清空目的文件夹", false));
-		options.addOption(getOption("s", "source", true, "待切割的文件或目录", true));
-		options.addOption(getOption("d", "destinationDir", true, "目的生成文件的目录", true));
+		options.addOption(getOption("splitSize", true, bundle.getString("SPLIT_SIZE"), false));
+		options.addOption(getOption("suffix", true, bundle.getString("SUFFIX"), false));
+		options.addOption(getOption("fileIndex", true, bundle.getString("FILE_INDEX"), false));
+		options.addOption(getOption("allowEmptyLine", false, bundle.getString("ALLOW_EMPTY_LINE"), false));
+		options.addOption(getOption("notClearDirAtFirst", false, bundle.getString("NOT_CLEAR_DIR_AT_FIRST"), false));
+		options.addOption(getOption("s", "source", true, bundle.getString("SOURCE"), true));
+		options.addOption(getOption("d", "destinationDir", true, bundle.getString("DESTINATION"), true));
 
 		CommandLineParser parser = new DefaultParser();
 		HelpFormatter formatter = new HelpFormatter();
@@ -55,10 +59,10 @@ public class FileSplitter {
 			FileSplitter splitter = new FileSplitter(splitSize, suffix, fileIndex, ignoreEmptyLine, clearDirFirst);
 			splitter.start(sourceFile, destDir);
 		}catch (MissingOptionException e) {
-			LOGGER.error("缺少参数: {}", e.getMissingOptions());
+			LOGGER.error("missing option: {}", e.getMissingOptions());
 			formatter.printHelp("FileSplitter", options);
 		}  catch (UnrecognizedOptionException e) {
-			LOGGER.error("不识别的参数: {}", e.getOption());
+			LOGGER.error("unrecognized option: {}", e.getOption());
 			formatter.printHelp("FileSplitter", options);
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -73,11 +77,11 @@ public class FileSplitter {
 		if (splitSize == null || splitSize.isEmpty()) {
 			return SPLIT_SIZE;
 		}
-		
+
 		char last = splitSize.charAt(splitSize.length()-1);
 		if (Character.isLetter(last)) {
 			int val = Integer.parseInt(splitSize.substring(0, splitSize.length() - 1));
-			
+
 			last = Character.toLowerCase(last);
 			int s;
 			if (last == 'k') {
@@ -89,7 +93,7 @@ public class FileSplitter {
 			}else {
 				throw new RuntimeException("not supported size unit: "+last);
 			}
-			
+
 			return s;
 		} else {
 			return Integer.parseInt(splitSize);
@@ -108,7 +112,7 @@ public class FileSplitter {
 		LOGGER.info("destDir: "+destDir);
 		LOGGER.info("splitSize: "+splitSize);
 		LOGGER.info("split file start.");
-		
+
 		File dest = new File(destDir);
 		if (!dest.exists()) {
 			dest.mkdirs();
@@ -117,29 +121,29 @@ public class FileSplitter {
 				LOGGER.error("{} can not be file!", destDir);
 				return;
 			}
-			
+
 			if (this.clearDirFirst) {
 				clearDir(dest);
 			}
 		}
-		
+
 		File src = new File(sourceFile);
 		if (!src.exists()) {
 			LOGGER.error("Can not find file: {}", sourceFile);
 			return;
 		}
-		
+
 		if (src.isDirectory()) {
 			LOGGER.error(sourceFile + " can not be directory!");
 			return;
 		}
-		
+
 		final String lineSeparator = System.getProperty("line.separator");
 		if (lineSeparator == null || lineSeparator.isEmpty()) {
 			LOGGER.warn("Can not get system lineSeparator, use \n.");
 		}
-		
-		
+
+
 		final String srcSuffix;
 		if (this.suffix == null) {
 			srcSuffix = resolveSuffix(src.getAbsolutePath());
@@ -151,7 +155,7 @@ public class FileSplitter {
 
 		File f = new File(getSplitFileName(destDir, this.fileIndex, srcSuffix));
 		FileWriter fw = new FileWriter(f);
-		
+
 		FileReader read = new FileReader(src);
 		BufferedReader br = new BufferedReader(read);
 
@@ -198,7 +202,7 @@ public class FileSplitter {
 				}
 				return FileVisitResult.CONTINUE;
 			}
-			
+
 		});
 	}
 
@@ -219,7 +223,7 @@ public class FileSplitter {
 		option.setRequired(required);
 		return option;
 	}
-	
+
 	private static Option getOption(String opt, String longOpt, boolean hasArg, String description, boolean required){
 		Option option = new Option(opt, longOpt, hasArg, description);
 		option.setRequired(required);

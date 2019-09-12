@@ -1,4 +1,6 @@
-# file-splitter
+# file-splitter  
+
+[English ReadMe](https://github.com/someja/file-splitter/blob/master/README.en.md)
 
 #### 介绍
 文件分割器, 可将大文件分割为多个小文件, 支持自定义分割大小等参数.
