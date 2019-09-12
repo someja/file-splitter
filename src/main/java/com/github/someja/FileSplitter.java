@@ -1,4 +1,4 @@
-package com.lxx;
+package com.github.someja;
 
 
 import org.apache.commons.cli.*;
