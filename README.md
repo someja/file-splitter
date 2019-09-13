@@ -7,9 +7,11 @@
 
 
 #### 安装教程
+* 直接下载
+[file-splitter](https://github.com/someja/file-splitter/releases/download/V0.0.1/file-splitter-jar-with-dependencies.jar)
 
 
-手动安装如下:  
+* 手动安装如下:  
 1. 首先确保安装JDK8, MAVEN  
 2. 克隆本代码, 然后在项目根目录命令行下执行`mvn package`打包, 在target下生成`file-splitter-jar-with-dependencies.jar`即可.  
 
@@ -29,6 +31,17 @@
 `-notClearDirAtFirst`         执行前不要清空目的文件夹,默认会清空目的文件夹  
 `-splitSize <arg>`            切割大小,默认字节,支持k,m,g,默认50M  
 `-suffix <arg>`               切割后的文件后缀,默认是取的源文件的后缀  
+
+3. 可通过API方式调用.  
+Maven坐标:  
+
+```  
+<dependency>
+	<groupId>com.github.someja</groupId>
+	<artifactId>file-splitter</artifactId>
+	<version>0.0.1</version>
+</dependency>	
+```  
 
 
 #### 联系方式  

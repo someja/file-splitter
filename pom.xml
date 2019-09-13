@@ -46,6 +46,13 @@
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
 		</repository>
 	</distributionManagement>
+	
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
 	<build>
 		<finalName>file-splitter</finalName>
 		<plugins>
@@ -81,6 +88,7 @@
 				<version>1.6</version>
 				<executions>
 					<execution>
+						<id>sign-artifacts</id>
 						<phase>verify</phase>
 						<goals>
 							<goal>sign</goal>
@@ -114,12 +122,6 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<properties>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 
 	<dependencies>
 		<dependency>
