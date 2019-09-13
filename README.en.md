@@ -4,7 +4,7 @@
 split one file to smaller files, Support for custom parameters
 
 #### Install  
-* download executable file: [file-splitter](https://github.com/someja/file-splitter/releases/download/V0.0.1/file-splitter-jar-with-dependencies.jar)  
+* download executable jar: [file-splitter](https://github.com/someja/file-splitter/releases/download/V0.0.1/file-splitter-jar-with-dependencies.jar)  
 
 
 * manual build  

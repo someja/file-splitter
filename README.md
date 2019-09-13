@@ -32,9 +32,9 @@
 `-splitSize <arg>`            切割大小,默认字节,支持k,m,g,默认50M  
 `-suffix <arg>`               切割后的文件后缀,默认是取的源文件的后缀  
 
-3. 可通过API方式调用.  
+3. 可通过API方式调用.    
+  
 Maven坐标:  
-
 ```  
 <dependency>
 	<groupId>com.github.someja</groupId>
