@@ -15,6 +15,11 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+/**
+ * split one file to smaller files, Support for custom parameters
+ * @author nova fred
+ *
+ */
 public class FileSplitter {
 	private static final Logger LOGGER = LoggerFactory.getLogger(FileSplitter.class);
 	private static final int SPLIT_SIZE = 1024*1024*50; // 切割大小
@@ -106,9 +111,9 @@ public class FileSplitter {
 	}
 
 	/**
-	 * 开始切割文件, 生成到指定目录
-	 * @param sourceFile 源文件,要分割的文件
-	 * @param destDir 切割后文件的目录
+	 * start to split files to directory
+	 * @param sourceFile source file or directory to split
+	 * @param destDir splitted file's dir
 	 * @throws IOException
 	 */
 	public void start(String sourceFile, String destDir) throws IOException {
@@ -211,6 +216,14 @@ public class FileSplitter {
 		});
 	}
 
+	/**
+	 * specify parameters for split file
+	 * @param splitSize
+	 * @param suffix
+	 * @param fileIndex
+	 * @param ignoreEmptyLine
+	 * @param clearDirFirst
+	 */
 	public FileSplitter(int splitSize, String suffix, int fileIndex, boolean ignoreEmptyLine, boolean clearDirFirst) {
 		this.splitSize = splitSize;
 		this.suffix = suffix;
@@ -219,6 +232,9 @@ public class FileSplitter {
 		this.clearDirFirst = clearDirFirst;
 	}
 
+	/**
+	 * use default parameter
+	 */
 	public FileSplitter() {
 		this(SPLIT_SIZE, SUFFIX, FILE_INDEX, IGNORE_EMPTY_LINE, CLEAR_DIR_FIRST);
 	}
